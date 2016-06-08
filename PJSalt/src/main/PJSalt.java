@@ -119,7 +119,7 @@ public class PJSalt extends Script {
                 getTabs().open(Tab.INVENTORY);
                 if (saltPile != null && !getInventory().isFull()) {
                 	saltPile.interact("Dig");
-					for (int i = 0; i < Script.random(20, 35); i++) {
+					for (int i = 0; i < Script.random(5, 10); i++) {
 						if (saltPile != null && !getInventory().isFull()) {
 							Script.sleep(Script.random(1000, 1500));;
 						}
