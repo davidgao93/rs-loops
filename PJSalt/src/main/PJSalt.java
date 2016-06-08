@@ -150,21 +150,23 @@ public class PJSalt extends Script {
                     }
                 }.sleep();
                 if (settings.getRunEnergy() <= 60) {
-                	getBank().withdraw(STAMINA_ID, 1);
-                	getBank().close();
-    	  	        new ConditionalSleep(1000, 100) {
-    	  	            @Override
-    	  	            public boolean condition() throws InterruptedException {
-    	  	                return !getBank().isOpen();
-    	  	            }
-    	  	        }.sleep();
-	  	        	if (getInventory().contains(STAMINA_ID)) {
-	  	  				getInventory().interact("Drink", STAMINA_ID);
-	  	  				Script.sleep(Script.random(1200, 1500));
-  	  				}
-	  	  			if (getInventory().contains(DSTAMINA_ID)) {
-	  	  				getInventory().getItem(DSTAMINA_ID).interact("Drop");
-	  	  			}
+                	if (getBank().contains(STAMINA_ID)) {
+	                	getBank().withdraw(STAMINA_ID, 1);
+	                	getBank().close();
+	    	  	        new ConditionalSleep(1000, 100) {
+	    	  	            @Override
+	    	  	            public boolean condition() throws InterruptedException {
+	    	  	                return !getBank().isOpen();
+	    	  	            }
+	    	  	        }.sleep();
+		  	        	if (getInventory().contains(STAMINA_ID)) {
+		  	  				getInventory().interact("Drink", STAMINA_ID);
+		  	  				Script.sleep(Script.random(1200, 1500));
+	  	  				}
+		  	  			if (getInventory().contains(DSTAMINA_ID)) {
+		  	  				getInventory().getItem(DSTAMINA_ID).interact("Drop");
+		  	  			}
+	                }
                 }
 		      	counter += 27;
             }
@@ -172,6 +174,7 @@ public class PJSalt extends Script {
 			
         case WORLDHOP:
         	log("WORLDHOP");
+        	Script.sleep(Script.random(4000, 5500));;
         	status = "Hopping";
         	if (DMMWorlds != null && DMMWorlds[worldCounter] != -1){
 				worlds.hop(DMMWorlds[worldCounter]);
