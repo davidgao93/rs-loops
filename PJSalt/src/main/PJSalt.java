@@ -28,16 +28,16 @@ public class PJSalt extends Script {
     	12, 13, 14, 18, 19, 20, 22, 27, 28, 29, 30, 33, 34, 36, 38, 41,
     	42, 43, 44, 46, 50, 51, 52, 54, 57, 58, 59, 60, 62, 67, 68, 69, 70,
     	74, 75, 76, 77, 78, 86};
-    public static int worldCounter = 0;
-    public static int STAMINA_ID = 12631, DSTAMINA_ID = 229;
+	public static int worldCounter = 0;
+	public static int STAMINA_ID = 12631, DSTAMINA_ID = 229;
     
-    Entity 	westEntity, southEntity, eastEntity;
+    Entity westEntity, southEntity, eastEntity;
     
 	private Timer timer;
 	private Mouse m;
-    private String status;
-    int counter, currentWorld;
-    RS2Object saltPile;
+	private String status;
+	int counter, currentWorld;
+	RS2Object saltPile;
     
     @Override
     public void onStart() {
