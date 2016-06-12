@@ -60,13 +60,13 @@ public class Bandits extends Script {
 				if (!myPlayer().getPosition().equals(kappa)) {
 					kappa.interact(getBot(), "Walk here");
 				}
-				Script.sleep(Script.random(8000, 15000));;
+				Script.sleep(Script.random(8000, 15000));
 				break;
 			case EAT:
 				log("EAT");
-				while (skills.getDynamic(Skill.HITPOINTS) <= skills.getStatic(Skill.HITPOINTS) - 15) {
+				while (skills.getDynamic(Skill.HITPOINTS) <= skills.getStatic(Skill.HITPOINTS) - 15 && getInventory().contains(foodid)) {
 					getInventory().interact("Eat", foodid);
-					Script.sleep(Script.random(1500, 3000));;
+					Script.sleep(Script.random(1000, 2000));
 				}
 				nextHP = random(20, 55);
 				log("Eating next at : " + nextHP);
@@ -74,21 +74,28 @@ public class Bandits extends Script {
 			case EXCHANGE:
 			    log("EXCHANGE");
 			    RS2Object curtain = objects.closest("Curtain");
-			    if (curtain != null && curtain.hasAction("Open")) {
+			    while (curtain != null && curtain.hasAction("Open")) {
 			    	curtain.interact("Open");
+			    	Script.sleep(Script.random(2000, 3000));
 			    }
 				if (!myPlayer().getPosition().equals(kappaHD)) {
 					kappaHD.interact(getBot(), "Walk here");
+					Script.sleep(Script.random(2000, 3000));
 				}
-			    if (curtain != null && curtain.hasAction("Close")) {
+			    while (curtain != null && curtain.hasAction("Close")) {
 			    	curtain.interact("Close");
+			    	Script.sleep(Script.random(2000, 3000));
 			    }
-		    	getWalking().walk(keepo);
+			    if (!myPlayer().getPosition().equals(keepo)) {
+			    	getWalking().walk(keepo);
+			    	Script.sleep(Script.random(1000, 1500));
+			    }
+			    
 		    	tiles = npcs.closest("Tiles");
-		    	Script.sleep(Script.random(1000, 1500));;
-		    	if (tiles != null) {
+		    	while (tiles != null && !getInventory().contains(foodid)) {
 		    		if (getInventory().isItemSelected()) {
 		    			tiles.interact("Use");
+		    			Script.sleep(Script.random(1000, 1500));
 		    			dialogues.selectOption(2);
 		    		} else {
 		    			getInventory().interact("Use", noteid);
@@ -98,9 +105,11 @@ public class Bandits extends Script {
 		    	if (getInventory().contains(foodid)) {
 					if (!myPlayer().getPosition().equals(kappaHD)) {
 						kappaHD.interact(getBot(), "Walk here");
+						Script.sleep(Script.random(1000, 1500));
 					}
-				    if (curtain != null && curtain.hasAction("Open")) {
+				    while (curtain != null && curtain.hasAction("Open")) {
 				    	curtain.interact("Open");
+				    	Script.sleep(Script.random(1000, 1500));
 				    }
 					getWalking().walk(kappa);
 		    	}
