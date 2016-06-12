@@ -1,6 +1,8 @@
 package main;
 
-import org.osbot.rs07.api.model.Entity;
+import org.osbot.rs07.api.model.NPC;
+import org.osbot.rs07.api.model.RS2Object;
+import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.map.Position;
 import org.osbot.rs07.api.ui.Skill;
 import org.osbot.rs07.script.Script;
@@ -16,8 +18,11 @@ import java.awt.*;
 public class Bandits extends Script {
 	private Timer timer;
 	private Mouse m;
+	private NPC tiles;
     private int foodid, noteid, nextHP;
     Position kappa = new Position(3185, 2987, 0);
+    Position kappaHD = new Position(3182, 2984, 0);
+    Area keepo = new Area(3175, 2988, 3178, 2986);
     
     @Override
     public void onStart() {
@@ -65,20 +70,43 @@ public class Bandits extends Script {
 				}
 				nextHP = random(20, 55);
 				log("Eating next at : " + nextHP);
+				break;
 			case EXCHANGE:
 			    log("EXCHANGE");
-		    	getWalking().webWalk(new Position(3176, 2986, 0));
-		    	Entity tiles = getObjects().closest("Tiles");
+			    RS2Object curtain = objects.closest("Curtain");
+			    if (curtain != null && curtain.hasAction("Open")) {
+			    	curtain.interact("Open");
+			    }
+				if (!myPlayer().getPosition().equals(kappaHD)) {
+					kappaHD.interact(getBot(), "Walk here");
+				}
+			    if (curtain != null && curtain.hasAction("Close")) {
+			    	curtain.interact("Close");
+			    }
+		    	getWalking().walk(keepo);
+		    	tiles = npcs.closest("Tiles");
 		    	Script.sleep(Script.random(1000, 1500));;
 		    	if (tiles != null) {
-		    		getInventory().interact("Use", noteid);
-		    		tiles.interact("Use");
+		    		if (getInventory().isItemSelected()) {
+		    			tiles.interact("Use");
+		    			dialogues.selectOption(2);
+		    		} else {
+		    			getInventory().interact("Use", noteid);
+		    		}
 		    	}
-		    	getWalking().webWalk(kappa);
-	           
+		    	
+		    	if (getInventory().contains(foodid)) {
+					if (!myPlayer().getPosition().equals(kappaHD)) {
+						kappaHD.interact(getBot(), "Walk here");
+					}
+				    if (curtain != null && curtain.hasAction("Open")) {
+				    	curtain.interact("Open");
+				    }
+					getWalking().walk(kappa);
+		    	}
 			break;
         }
-        return 1500;
+        return 300;
     }
 
     @Override
