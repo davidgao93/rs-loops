@@ -71,7 +71,7 @@ public class KingKong extends Script {
     
     private State getState() {
     	boulder = objects.get(2910, 9127).get(0);
-    	if (getInventory().contains(19665)) {
+    	if (getInventory().contains(19665) && boulder.getId() == 28827) {
     		return State.DROP;
     	} else if (!onlyMe()) {
     		return State.WORLDHOP;
@@ -81,7 +81,7 @@ public class KingKong extends Script {
     		return State.HUNT;
     	} else if (boulder.getId() >= 28830) {
     		return State.LOOT;
-    	} else if (!getInventory().contains(BANANA)) {
+    	} else if (!getInventory().contains(BANANA) && boulder.getId() != 28827) {
     		return State.BONES;
     	} else {
     		return State.IDLE;
