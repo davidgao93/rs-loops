@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.script.ScriptManifest;
+import org.osbot.rs07.utility.ConditionalSleep;
 import org.osbot.rs07.api.map.Area;
 import org.osbot.rs07.api.model.GroundItem;
 import org.osbot.rs07.api.model.Player;
@@ -31,7 +32,7 @@ public class KingKong extends Script {
 	int hunterXP, hxph, currentWorld;
 	RS2Object boulder;
 	public String status = "Getting to work";
-	int TAIL = 19665, BONES = 526, BANANA = 1963, TABS = 8014;
+	int TAIL = 19665, BONE = 526, BANANA = 1963, TABS = 8014;
 	Area boulderArea = new Area(2912, 9128, 2912, 9127);
 	public void onStart() {
 		experienceTracker.start(Skill.HUNTER);
@@ -108,13 +109,25 @@ public class KingKong extends Script {
 		case BONES:
 			log("BONES");
 			while (!getInventory().isFull()) {
-				GroundItem bone = getGroundItems().closest(BONES);
+				GroundItem bone = getGroundItems().closest(BONE);
 				if (bone != null) {
 					if (bone.isVisible()) {
 						bone.interact("Take");
-						sleep(random(1500, 2500));
+						sleep(random(1000, 3000));
+						new ConditionalSleep(10000) {
+							@Override
+							public boolean condition() {
+								return !myPlayer().isMoving();
+							}
+						}.sleep();
 					} else {
 						getWalking().walk(bone.getPosition());
+						new ConditionalSleep(10000) {
+							@Override
+							public boolean condition() {
+								return !myPlayer().isMoving();
+							}
+						}.sleep();
 					}
 				} else {
 					getWalking().webWalk(boulderArea);
@@ -141,6 +154,7 @@ public class KingKong extends Script {
 	    	sleep(random(2000, 3500));
 			break;
 		case WORLDHOP:
+			log("WORLDHOP");
 			if (Worlds != null && Worlds[worldCounter] != -1){
 				worlds.hop(Worlds[worldCounter]);
 				worldCounter++;
@@ -152,7 +166,14 @@ public class KingKong extends Script {
 			}
 			break;
 		case IDLE:
-			sleep(random(1000, 3000));
+			log("IDLE");
+			sleep(random(1000, 1500));
+			new ConditionalSleep(30000) {
+				@Override
+				public boolean condition() {
+					return boulder.getId() != 28827;
+				}
+			}.sleep();
 			break;
 		}
 		return 300;
