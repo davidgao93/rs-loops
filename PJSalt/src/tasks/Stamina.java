@@ -36,6 +36,7 @@ public class Stamina implements Node {
 	@Override
 	public void run() throws InterruptedException {
 		s.log("STAMINA OPERATION");
+		data.setStatus("Recharging Stamina");
 		RS2Object bankBooth = s.objects.closest("Bank booth");
 		if (bankBooth != null) {
   			bankBooth.interact("Bank");

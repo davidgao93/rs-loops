@@ -11,6 +11,8 @@ public class Data {
 	public Area swest = new Area(1685, 3516, 1691, 3510);
 	private int currentWorld = 0;
 	
+	private String status = "Initializing...";
+	
 	public static int[] Worlds = {2, 3, 4, 5, 6, 9, 10, 11,
 		12, 14, 18, 19, 20, 22, 27, 28, 29, 30, 33, 34, 36, 38, 41,
 		42, 43, 44, 46, 50, 51, 52, 54, 58, 59, 60, 62, 67, 68, 69, 70,
@@ -45,6 +47,16 @@ public class Data {
 	
 	public boolean getWorldHopUsage() {
 		return worldHopUsage;
+	}
+	
+	public void setStatus(String s) {
+		if (!s.equals(this.status)) { 
+			this.status = s;
+		}
+	}
+	
+	public String getStatus() {
+		return this.status;
 	}
 	
 }

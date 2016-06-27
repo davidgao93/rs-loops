@@ -33,7 +33,7 @@ public class WorldHop implements Node {
 	@Override
 	public void run() throws InterruptedException {
 		s.log("WORLDHOP OPERATION");
-       
+		data.setStatus("Hopping worlds");
         if (Worlds != null) {
         	while(s.worlds.getCurrentWorld() == data.getCurrentWorld()) {
         		hopToWorld = getRandom(Worlds);

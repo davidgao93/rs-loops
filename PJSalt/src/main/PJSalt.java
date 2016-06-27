@@ -25,14 +25,14 @@ public class PJSalt extends Script {
 	Entity westEntity, southEntity, eastEntity;
 	private Timer timer;
 	private Mouse m;
-	private String status;
+
 
 	@Override
 	public void onStart() throws InterruptedException {
 		timer = new Timer(System.currentTimeMillis());
 		m = new Mouse(this);
 		gui = new GUI();
-		status = "Initializing...";
+		
 		while (gui.running) {
 			sleep(10);
 		}
@@ -42,7 +42,6 @@ public class PJSalt extends Script {
 	
 	@Override
 	public void onExit() {
-		this.status = "Exiting...";
 	}
 	
 	@Override
@@ -77,7 +76,7 @@ public class PJSalt extends Script {
 		m.draw(g);
 		g.drawString("Salt collected: " + data.counter, 10, 300);
 		g.drawString("Timer: " + timer.parse(timer.getElapsed()), 10, 315);
-		g.drawString("Status: " + this.status, 10, 330);
+		g.drawString("Status: " + data.getStatus(), 10, 330);
 	}
 
 }
