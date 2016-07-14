@@ -166,14 +166,7 @@ public class KingKong extends Script {
 			}
 			break;
 		case IDLE:
-			log("IDLE");
 			sleep(random(1000, 1500));
-			new ConditionalSleep(30000) {
-				@Override
-				public boolean condition() {
-					return boulder.getId() != 28827;
-				}
-			}.sleep();
 			break;
 		}
 		return 300;

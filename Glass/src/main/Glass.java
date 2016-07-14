@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -54,10 +55,6 @@ public class Glass extends Script {
     		return State.GLASSMAKE;
     	} else if (getInventory().contains(GLASS)){
     		return State.BANK;
-    	} else if (getInventory().contains(CLAY)){
-    		return State.CLAY;
-    	} else if (getInventory().contains(SOFTCLAY)){
-    		return State.BANKCLAY;
     	} else {
     		return State.IDLE;
     	}
@@ -85,7 +82,7 @@ public class Glass extends Script {
     private boolean isHumidifyOption() {
     	for (Option option : menu.getMenu()) {
     		if (option != null && option.action.equals("Cast") && option.name.contains("Humidify")) {
-    					return true;
+					return true;
 			}
 		}
     	return false;
@@ -120,31 +117,43 @@ public class Glass extends Script {
     }
     
     private void glassBank() throws InterruptedException {
-		if (random(0, 50) == 2) {
-	      	depositItem(GLASS);
-	      	clayBank();
-		} else {
-	      	depositItem(GLASS);
-	      	if (random(0, 100) <= 50) {
+    	depositItem(GLASS);
+      	sleep(random(500, 1000));
+		if (getBank().contains(SEAWEED) && getBank().contains(SAND)) {
+	      	if (random(0, 100) < 50) {
 	      		getBank().withdraw(SAND, 13);
-	      		getBank().withdraw(SEAWEED, 13);
+	      		if (random(0, 100) < 90) {
+	      			getBank().withdraw(SEAWEED, 13);
+	      		} else {
+	      			getBank().withdrawAll(SEAWEED);
+	      		}
 	      	} else {
 	      		getBank().withdraw(SEAWEED, 13);
-	      		getBank().withdraw(SAND, 13);
+	      		if (random(0, 100) < 90) {
+	      			getBank().withdraw(SAND, 13);
+	      		} else {
+	      			getBank().withdrawAll(SAND);
+	      		}
 	      	}
 		}
     }
     
     private void clayBank() throws InterruptedException {
-		if (random(0, 50) == 1) {
-			depositItem(SOFTCLAY);
-	      	sleep(random(500,1000));
-      		glassBank();
-		} else {
-			depositItem(SOFTCLAY);
-	      	sleep(random(500,1000));
-      		getBank().withdrawAll(CLAY);
-		}
+    	depositItem(SOFTCLAY);
+    	sleep(random(500, 1000));
+    	if (getBank().contains(CLAY)) {
+			if (random(0, 50) == 1) {
+	      		glassBank();
+			} else {
+				if (random(0, 50) == 1) {
+					getBank().withdraw(CLAY, random(26, 33));
+				} else {
+					getBank().withdrawAll(CLAY);
+				}
+			}
+    	} else {
+    		glassBank();
+    	}
     }
 
 	public int onLoop() throws InterruptedException {
@@ -153,7 +162,8 @@ public class Glass extends Script {
 			log("GLASSMAKE");
 			status = "Making glass";
 			if (getBank().isOpen()) {
-				getBank().close();
+				//getBank().close();
+				getKeyboard().typeKey((char)KeyEvent.VK_ESCAPE);
 			}
 			if (getInventory().contains(11998)) {
 				getInventory().interact("Wield", 11998);

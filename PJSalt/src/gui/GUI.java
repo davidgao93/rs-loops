@@ -45,15 +45,14 @@ public class GUI extends JFrame {
 		contentPane.add(btnStartScript);
 		
 		staminaUsageBox = new JCheckBox();
-		staminaUsageBox.setText("Stamina Pots");
+		staminaUsageBox.setText("Drink Stam");
 		staminaUsageBox.setBounds(10, 10, 100, 20);
 		staminaUsageBox.setSelected(true);
 		contentPane.add(staminaUsageBox);
 		
 		worldHopBox = new JCheckBox();
-		worldHopBox.setText("World Hopping");
+		worldHopBox.setText("World Hop");
 		worldHopBox.setBounds(10, 30, 100, 20);
-		worldHopBox.setSelected(true);
 		contentPane.add(worldHopBox);
 
 		running = true;

@@ -110,7 +110,12 @@ public class PlankRunner extends Script {
 				
 				if (mouseToBuyArea()) {
 	                leftClick();
-	                sleep(random(500, 1500));
+					new ConditionalSleep(10000) {
+						@Override
+						public boolean condition() throws InterruptedException {
+							return getInventory().contains(OAKPLANK);
+						}
+					}.sleep();
 				}
 				
 			} else {
@@ -122,7 +127,6 @@ public class PlankRunner extends Script {
 	    	status = "Banking";
 	    	if (b.contains(myPlayer()) || bb.contains(myPlayer())) {
 				RS2Object bankBooth = objects.closest("Bank chest");
-				Script.sleep(Script.random(1000, 1500));;
 				if (!bank.isOpen()) {
 					if (bankBooth != null) {
 						bankBooth.interact("Use");
@@ -211,7 +215,7 @@ public class PlankRunner extends Script {
 					RS2Object bankBooth = objects.closest("Bank chest");
 					if (bankBooth != null) {
 						bankBooth.interact("Use");
-						new ConditionalSleep(3000, 100) {
+						new ConditionalSleep(10000) {
 							@Override
 							public boolean condition() throws InterruptedException {
 								return getBank().isOpen();
@@ -224,6 +228,12 @@ public class PlankRunner extends Script {
 					} else {
 						bank.withdrawAll(LOG);
 					}
+					new ConditionalSleep(10000) {
+						@Override
+						public boolean condition() throws InterruptedException {
+							return getInventory().contains(LOG);
+						}
+					}.sleep();
 				}
 			} else {
 				getWalking().webWalk(b);

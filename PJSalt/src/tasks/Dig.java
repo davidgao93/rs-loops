@@ -40,13 +40,13 @@ public class Dig implements Node {
 	@Override
 	public void run() throws InterruptedException {
 		data.setStatus("Digging");
-		RS2Object saltPile = s.getObjects().closest("Saltpetre");
+		final RS2Object saltPile = s.getObjects().closest("Saltpetre");
 		if (saltPile.isVisible() && !me.isAnimating()) {
 			saltPile.interact("Dig");
             new ConditionalSleep(Script.random(5000, 7000)) {
                 @Override
                 public boolean condition() throws InterruptedException {
-                    return s.getInventory().isFull();
+                    return s.getInventory().isFull() || !saltPile.isVisible();
                 }
             }.sleep();
 		} else {

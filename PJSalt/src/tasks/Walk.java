@@ -3,6 +3,7 @@ package tasks;
 import org.osbot.rs07.script.Script;
 import org.osbot.rs07.api.model.Entity;
 import org.osbot.rs07.api.model.NPC;
+import org.osbot.rs07.api.model.Player;
 
 import framework.Node;
 import data.Data;
@@ -11,10 +12,12 @@ public class Walk implements Node {
 	
 	private Script s;
 	private Data data;
+	private Player me;
 	
 	public Walk(Script s, Data data) {
 		this.s = s;
 		this.data = data;
+		this.me = s.myPlayer();
 	}
 	
 	@Override
@@ -48,6 +51,18 @@ public class Walk implements Node {
 			s.getWalking().webWalk(data.seast);
 		} else if (swestEntity != null) {
 			s.getWalking().webWalk(data.swest);
-		} 
+		} else {
+			if (data.getWorldHopUsage()) {
+				s.getWalking().walk(data.south);
+			} else {
+				if (data.west.contains(me)) {
+					s.getWalking().walk(data.swest);
+				} else if (data.seast.contains(me)) {
+					s.getWalking().walk(data.west);
+				} else {
+					s.getWalking().walk(data.south);
+				}
+			}
+		}
 	}
 }
